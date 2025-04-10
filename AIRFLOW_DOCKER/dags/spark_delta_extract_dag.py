@@ -121,7 +121,7 @@ PARAMS = {
 }
 
 @dag(
-    dag_id="clean_observation_data",
+    dag_id="extract_raw_to_delta",
     max_active_runs=1, 
     start_date = datetime(2024, 1, 1),
     catchup = False, 
@@ -134,7 +134,7 @@ PARAMS = {
         "retry_delay": timedelta(seconds=10)
     },
 )
-def clean_observation_data():
+def extract_observation_data():
     python_function_args = {
         "aws_access_key_id": "{{ params.aws_access_key_id }}",
         "aws_secret_access_key": "{{ params.aws_secret_access_key }}",
@@ -142,10 +142,10 @@ def clean_observation_data():
         "output_s3_delta_path": "{{ params.output_s3_delta_path }}",
     }
     
-    clean_observation_data_task = PythonOperator(
-        task_id="clean_observation_data_task_id",
+    extract_observation_data_task = PythonOperator(
+        task_id="extract_observation_data",
         python_callable=spark_observation_delta,
         op_kwargs=python_function_args
     )
 
-clean_observation_data()
+extract_observation_data()

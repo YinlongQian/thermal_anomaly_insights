@@ -121,7 +121,7 @@ PARAMS = {
 }
 
 @dag(
-    dag_id="extract_raw_to_delta",
+    dag_id="transform_raw_to_delta",
     max_active_runs=1, 
     start_date = datetime(2024, 1, 1),
     catchup = False, 

@@ -1,0 +1,7 @@
+version: 2
+
+seeds: 
+  - name: population_density_lookup
+    description: >
+      A list of countries and dependencies by population density
+      from Wikipedia.

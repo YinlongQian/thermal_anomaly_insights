@@ -134,7 +134,7 @@ PARAMS = {
         "retry_delay": timedelta(seconds=10)
     },
 )
-def extract_observation_data():
+def transform_observation_data():
     python_function_args = {
         "aws_access_key_id": "{{ params.aws_access_key_id }}",
         "aws_secret_access_key": "{{ params.aws_secret_access_key }}",
@@ -142,10 +142,10 @@ def extract_observation_data():
         "output_s3_delta_path": "{{ params.output_s3_delta_path }}",
     }
     
-    extract_observation_data_task = PythonOperator(
-        task_id="extract_observation_data",
+    transform_observation_data_task = PythonOperator(
+        task_id="transform_observation_data",
         python_callable=spark_observation_delta,
         op_kwargs=python_function_args
     )
 
-extract_observation_data()
+transform_observation_data()

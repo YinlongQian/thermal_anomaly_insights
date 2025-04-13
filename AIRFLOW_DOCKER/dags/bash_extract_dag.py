@@ -40,6 +40,7 @@ def upload_to_gcs(
         blob = bucket.blob(destination_blob_name)
 
         blob.upload_from_filename(source_file_name)
+        print(f"Uploaded {source_file_name} to {destination_blob_name}")
     print(f"{len(string_paths)} csv files uploaded")
 
 # default values on environmental variables

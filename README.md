@@ -50,8 +50,41 @@ This DAG creates an external table on the Google Cloud Bigquery based on the sel
 
 
 
-2. 
-3. 
+2. run IaC
+    1. inside the local repo directory, go to folder `IAC`
+
+        `cd IAC`
+
+    2. open variables.tf, set the default value for the following variables:
+        * client_email: your GCP service account email
+        * project_name: your project name on GCP
+        * (optional) region/location: all the resources will be on the same region/location
+        * gcs_bucket_name: your bucker name on GCS, required to be globally unique
+        * bq_dataset_name: your dataset name on Google Bigquery
+
+    3. Copy the content in your GCP service account JSON file to `gcp_credentials.json` in subfolder `credentials`. Do not change the file name `gcp_credentials.json`.
+
+    4. At folder `IAC`, initialize the terraform
+
+        `terraform init`    
+
+    5. Dry-run the terraform, check that no errors
+
+        `terraform plan`
+
+    6. Apply the terraform
+
+        `terraform apply`
+
+    7. Wait for the apply command to complete. Go to GCP console and check the bucket/dataset/instance are online
+
+
+3. run Airflow
+    1. s
+    2. s
+    
+
+ 
 4. 
 
 

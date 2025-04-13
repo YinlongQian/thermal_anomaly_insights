@@ -58,6 +58,7 @@ def spark_observation_delta(
         pdf['acq_timestamp'] = pd.to_datetime(pdf['acq_date'].astype('str') + ' ' + 
                                             (pdf['acq_time'] // 100).astype('str') + ':' + 
                                             (pdf['acq_time'] % 100).astype('str') + ':00')
+        pdf['country'] = pdf['country'].str.replace("_", " ")
 
         return pdf[
             ['latitude', 'longitude', 'brightness', 'scan', 'track', 'acq_timestamp', 

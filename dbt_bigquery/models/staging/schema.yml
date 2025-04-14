@@ -2,8 +2,8 @@ version: 2
 
 sources:
   - name: staging
-    database: "{{ env_var('DBT_DATABASE', 'de-zoomcampfire') }}"
-    schema: "{{ env_var('DBT_SCHEMA', 'project_dataset') }}"
+    database: "{{ env_var('DBT_DATABASE', '<your GCP project>') }}"
+    schema: "{{ env_var('DBT_SCHEMA', '<your Bigquery dataset>') }}"
       # loaded_at_field: record_loaded_at
     tables:
       - name: observation_external

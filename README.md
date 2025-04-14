@@ -64,34 +64,76 @@ This DAG creates an external table on the Google Cloud Bigquery based on the sel
 
     3. Copy the content in your GCP service account JSON file to `gcp_credentials.json` in subfolder `credentials`. Do not change the file name `gcp_credentials.json`.
 
-    4. At folder `IAC`, initialize the terraform
+    4. At folder `IAC`, initialize terraform, dry-run terraform, and apply terraform
 
-        `terraform init`    
+        ```
+        terraform init
+        terraform plan
+        terraform apply
+        ```
 
-    5. Dry-run the terraform, check that no errors
-
-        `terraform plan`
-
-    6. Apply the terraform
-
-        `terraform apply`
-
-    7. Wait for the apply command to complete. Go to GCP console and check the bucket/dataset/instance are online
+    5. Wait for the apply command to complete. Go to GCP console and check the bucket/dataset/instance are online
 
 
 3. run Airflow
-    1. s
-    2. s
-    
+    1. ssh to the GCP instance
+
+        ```
+        ssh -i PATH_TO_PRIVATE_KEY USERNAME@EXTERNAL_IP
+        ```
+
+    2. clone this Github repository
+
+        ```
+        git clone https://github.com/YinlongQian/thermal_anomaly_insights.git
+        ```
+
+    3. build and run the Airflow docker image
+
+        ```
+        cd AIRFLOW_DOCKER
+        docker build . --tag airflow_python310:latest
+        docker compose up -d --no-deps --build airflow-webserver airflow-scheduler
+        docker compose up airflow-init
+        ```
+
+    4. (Optional) Edit the year list at `inputs/years.txt` and the country list at `inputs/countries.txt` of your interest
+
+    5. Open the Airflow dashboard at `http://localhost:8080/`, enter the username `airflow` and the password `airflow`
+
+    6. Run DAG `extract_raw_data_to_gcs`    with the following configurations:
+
+        | configuration     | example value          |
+        | --------          | -------                |
+        | bucket            | bucket_name            |
+        | gcs_raw_data_path | final_project/raw_data |
+
+    With the example values above, it reads the raw data and uploads to the GCS location at `gs://bucket_name/final_project/raw_data`
+
+    7. Run DAG `transform_raw_to_delta` with the following configurations:
+
+        | configuration         | example value                              |
+        | --------              | -------                                    |
+        | input_gcs_path        | gs://bucket_name/final_project/raw_data    |
+        | output_gcs_delta_path | gs://bucket_name/final_project/delta_table |
+
+    With the example values above, it reads the raw data folder at `gs://bucket_name/final_project/raw_data`, applies the Spark transformations, and writes to the delta table at `gs://bucket_name/final_project/delta_table`.
+
+    8. Run DAG `load_delta_to_bigquery` with the following configurations:
+
+        | configuration        | example value               |
+        | --------             | -------                     |
+        | bucket               | bucket_name                 |
+        | gcs_delta_table_path | final_project/delta_table   |
+        | project              | project_name                |
+        | dataset              | dataset_name                |
+        | table                | table_name                  |
+
+    With the example values above, it reads the delta table at `gs://bucket_name/final_project/delta_table`, and loads to the Biqquery external table `project_name.dataset_name.table_name`.
+
 
  
 4. 
 
 
 
-
-`docker build . --tag airflow_python310:latest`
-
-`docker compose up -d --no-deps --build airflow-webserver airflow-scheduler`
-
-`docker compose up airflow-init`

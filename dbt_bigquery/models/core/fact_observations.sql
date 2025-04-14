@@ -6,7 +6,7 @@
             "field": "acq_year",
             "data_type": "int64",
             "range": {
-                "start": 2020,
+                "start": 2000,
                 "end": 2023,
                 "interval": 1
             }

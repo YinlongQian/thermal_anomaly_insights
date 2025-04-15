@@ -8,6 +8,10 @@ This is the repo on the final project for  the Data Engineering Zoomcamp 2025.
 
 
 ## Modules
+
+![image_alt](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/Project-DAG.png?raw=true)
+
+
 1. IAC - Infrastructure as Code
 
 This module uses Terraform to manage the following resources on Google Cloud Storage for usage in pipeline:

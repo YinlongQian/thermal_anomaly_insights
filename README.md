@@ -30,18 +30,18 @@ This module uses Terraform to manage the following resources on Google Cloud Sto
 
 2. AIRFLOW_DOCKER - customized Apache Airflow docker image
 
-This module, as the workflow orchestrator, manages the DAGs in the workflow on applying the ETL process (Extract, Transform, and Load) on the raw data. It runs the workflow on the Google Cloud Compute instance spinned up by the IAC module. It has the following DAGs:
+    This module, as the workflow orchestrator, manages the DAGs in the workflow on applying the ETL process (Extract, Transform, and Load) on the raw data. It runs the workflow on the Google Cloud Compute instance spinned up by the IAC module. It has the following DAGs:
 - bash_extract_dag.py - extract_raw_data
 
-This DAG takes a list of years and a list of countries of interest and downloads the corresponding raw data from the NASA website to a temporary local folder. It adds the country field as the partition key and uploads them to the Google Cloud Storage bucket.
+    This DAG takes a list of years and a list of countries of interest and downloads the corresponding raw data from the NASA website to a temporary local folder. It adds the country field as the partition key and uploads them to the Google Cloud Storage bucket.
 
 - spark_delta_transform_dag.py - transform_observation_data
 
-This DAG creates a Apache Spark cluster in local mode to clean the raw data. After appling some initial data transformations, it writes the data in partitions of <year, month> as a delta table to the Google Cloud Storage bucket.
+    This DAG creates a Apache Spark cluster in local mode to clean the raw data. After appling some initial data transformations, it writes the data in partitions of <year, month> as a delta table to the Google Cloud Storage bucket.
 
 - bigquery_load_dag.py - load_delta_to_bigquery
 
-This DAG creates an external table on the Google Cloud Bigquery based on the selected data in the delta table.
+    This DAG creates an external table on the Google Cloud Bigquery based on the selected data in the delta table.
 
 
 
@@ -57,7 +57,9 @@ This DAG creates an external table on the Google Cloud Bigquery based on the sel
 2. run IaC
     1. inside the local repo directory, go to folder `IAC`
 
-        `cd IAC`
+        ```
+        cd IAC
+        ```
 
     2. open variables.tf, set the default value for the following variables:
         * client_email: your GCP service account email
@@ -154,7 +156,29 @@ This DAG creates an external table on the Google Cloud Bigquery based on the sel
 
         Please see `DE Zoomcamp 4.4.1 - Deployment Using dbt Cloud (Alternative A)` in `Module 4: Analytics Engineering` for details on creating a deployment environment.
 
-    4. 
+    4. Create a job. Click `Create Job` then select `Deploy job`. Set `Job name` and select the deployment environment. Click `Save`.
+
+    5. Go to the jobs page and select the job created. Click `Run now`.
+
+    6. After run completes, go to Bigquery dashboard and verify the table `fact_observations` is in the dataset set above as an environmental variable.
+
+5. Visualization - Google Data Studio
+
+    1. Open Google Data Studio at `https://lookerstudio.google.com/`.
+
+    2. Create `Data Source`. Select `BigQuery`. Find table `fact_observations` in the project/dataset. Click `CONNECT`.
+
+    3. Create `Report`. Switch to `My data source` and select `fact_observations`. `Add` to the report.
+
+    4. Create a case study of a country by adding charts.
+
+        You can find some case study reports at folder Data_Studio_reports:
+
+        [Case study - Indonesia](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/Data_Studio_reports/Case_Study-Indonesia.pdf)
+
+        [Case study - United States](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/Data_Studio_reports/Case_Study-United_States.pdf)
+
+        
 
 
 

@@ -46,7 +46,7 @@ resource "google_bigquery_dataset" "project-dataset" {
 resource "google_compute_instance" "default" {
   name         = "vm-project"
   machine_type = "n2-standard-2"
-  zone         = "us-central1-a"
+  zone         = "us-east4-a"
 
   boot_disk {
     initialize_params {
@@ -70,4 +70,20 @@ resource "google_compute_instance" "default" {
     email  = var.client_email
     scopes = ["cloud-platform"]
   }
+}
+
+resource "google_compute_firewall" "rules" {
+  project     = var.project_name
+  name        = "for-airflow-dashboard"
+  network     = "default"
+  description = "Creates firewall rule on Airflow dashboard usage"
+
+  allow {
+    protocol  = "tcp"
+    ports     = ["8080"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  # source_tags = ["foo"]
+  # target_tags = ["web"]
 }

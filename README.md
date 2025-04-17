@@ -30,6 +30,8 @@ This project looks at this problem in a broad sense. To categorize, quantify, an
 
     - a Google Cloud Compute instance, for running the customized Airflow docker image
 
+    - a Google Cloud Compute firewall, for connecting to Airflow dashboard on the instance from local machine
+
 2. AIRFLOW_DOCKER - customized Apache Airflow docker image
 
     This module, as the workflow orchestrator, manages the DAGs in the workflow on applying the ETL process (Extract, Transform, and Load) on the raw data. It runs the workflow on the Google Cloud Compute instance spinned up by the IAC module. It has the following DAGs:

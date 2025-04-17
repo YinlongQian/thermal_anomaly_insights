@@ -1,11 +1,13 @@
 # thermal_anomaly_insights
-Last updated: April 12, 2025
+Last updated: April 16, 2025
 
 This is the repo on the final project for  the Data Engineering Zoomcamp 2025.
 
 ## Problem statement
 
+Wildfires have emerged as a critical global challenge in recent years, due to climate change, land-use shifts, and other human activities. Some of the recent notable incidents that have drawn global attention includes 2023 Canadian wildfires, 2023 Maui wildfires, and 2025 California wildfires. These events cause catastrophic ecological damage, threaten human lives, and incur billions in economic losses annually.
 
+This project looks at this problem in a broad sense. To categorize, quantify, and analyze all kinds of thermal anomalies all over the world, it utilizes the official thermal datasets captured by MODIS (Moderate Resolution Imaging Spectroradiometer) installed on NASA's satellites. At a country/region level, it classifies the detected thermal anomalies into four types as vegatation fire, volcano, other static land source, and offshore. By visualizing the trends in each type over the years, it assists us to gain in-depth insights into the regional patterns related to the composing proportion, frequency, spatial extent and intensity. For instance, we will be able to identify the countries with fast-growing wildfire risks and those with more effective measures put in place. It may even be useful for policy makers to make better policies on disaster precaution, resource allocation and emergency management targeting on the most common type of thermal anomaly in the region.
 
 ## Modules
 
@@ -27,6 +29,8 @@ This module uses Terraform to manage the following resources on Google Cloud Sto
     - fact and dimension tables
 
 - a Google Cloud Compute instance, for running the customized Airflow docker image (below)
+
+In real-life production development, we can create a 
 
 2. AIRFLOW_DOCKER - customized Apache Airflow docker image
 
@@ -80,13 +84,65 @@ This module uses Terraform to manage the following resources on Google Cloud Sto
 
     5. Wait for the apply command to complete. Go to GCP console and check the bucket/dataset/instance are online
 
+3. Set-up on GCP instance
 
-3. run Airflow
     1. ssh to the GCP instance
 
         ```
         ssh -i PATH_TO_PRIVATE_KEY USERNAME@EXTERNAL_IP
         ```
+
+    2. install docker:
+        ```
+        # Add Docker's official GPG key:
+        sudo apt-get update
+        sudo apt-get install ca-certificates curl
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+        # Add the repository to Apt sources:
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt-get update
+        ```
+        ```
+        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+        ```
+
+    3. install docker compose:
+        ```
+        sudo apt-get update
+        sudo apt-get install docker-compose-plugin
+        ```
+
+    4. pull the customized Airflow docker image from Google Artifact Registry
+
+        ```
+        sudo docker pull us-east4-docker.pkg.dev/de-zoomcampfire/airflow-for-de-zoomcamp/airflow_python310:latest
+        ```
+
+    5. clone this Github repository
+
+        ```
+        git clone https://github.com/YinlongQian/thermal_anomaly_insights.git
+        ```
+
+    6. build and run the customized Airflow docker image
+
+        ```
+        cd thermal_anomaly_insights/AIRFLOW_DOCKER/
+        # sudo docker build . --tag airflow_python310:latest
+        sudo docker image tag us-east4-docker.pkg.dev/de-zoomcampfire/airflow-for-de-zoomcamp/airflow_python310:latest airflow_python310:latest
+        echo -e "AIRFLOW_UID=$(id -u)" > .env
+        sudo docker compose up -d --no-deps --build airflow-webserver airflow-scheduler
+        sudo docker compose up airflow-init
+        ```
+
+3. run Airflow
+
 
     2. clone this Github repository
 
@@ -94,14 +150,7 @@ This module uses Terraform to manage the following resources on Google Cloud Sto
         git clone https://github.com/YinlongQian/thermal_anomaly_insights.git
         ```
 
-    3. build and run the Airflow docker image
 
-        ```
-        cd AIRFLOW_DOCKER
-        docker build . --tag airflow_python310:latest
-        docker compose up -d --no-deps --build airflow-webserver airflow-scheduler
-        docker compose up airflow-init
-        ```
 
     4. (Optional) Edit the year list at `inputs/years.txt` and the country list at `inputs/countries.txt` of your interest
 
@@ -178,7 +227,13 @@ This module uses Terraform to manage the following resources on Google Cloud Sto
 
         [Case study - United States](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/Data_Studio_reports/Case_Study-United_States.pdf)
 
-        
+6. Clean-up resources
+
+    1. go back to your local device, inside folder `IAC`:
+
+        ```
+        terraform destroy
+        ```
 
 
 

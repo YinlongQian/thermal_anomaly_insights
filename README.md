@@ -52,7 +52,7 @@ This project looks at this problem in a broad sense. To categorize, quantify, an
 
     This module applies further data transformation in SQL to the external table on BigQuery and builds the fact and dimension tables as the data warehouse for data visualization and data analysis. The tables are partitioned and clustered by year to make charts on Google Data Studio easily filtered on the year. As the case study reports shown below, every chart is used to analyze values in a specific year or a few specific years.
 
-    In real-life production envrionment, alternatively, I can create a cluster on Google Kubernetes Engine(GKE) and install the Airflow server application in it. Using KubernetesPodOperator in the DAGs, each step would run in a separate pod in the cluster. I can also apply a scheduler to run certains DAGs every 1 week or so. For this project, with a limited budget, I just choose to use a single Google Cloud Compute instance to run Airflow and turn it off once the jobs are done.
+In real-life production envrionment, alternatively, I can create a cluster on Google Kubernetes Engine(GKE) and install the Airflow server application in it. Using KubernetesPodOperator in the DAGs, each step would run in a separate pod in the cluster. I can also apply a scheduler to run certains DAGs every 1 week or so. For this project, with a limited budget, I just choose to use a single Google Cloud Compute instance to run Airflow and turn it off once the jobs are done.
 
 ## Instruction - run pipeline
 

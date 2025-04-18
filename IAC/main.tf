@@ -45,7 +45,7 @@ resource "google_bigquery_dataset" "project-dataset" {
 
 resource "google_compute_instance" "default" {
   name         = "vm-project"
-  machine_type = "n2-standard-2"
+  machine_type = "n2-standard-16"
   zone         = "us-east4-a"
 
   boot_disk {

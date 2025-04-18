@@ -11,7 +11,7 @@ This project looks at this problem in a broad sense. To categorize, quantify, an
 
 ## Modules
 
-![image_alt](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/Project-DAG.png?raw=true)
+![image_alt](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/images/Project-DAG.png)
 
 
 1. IAC - Infrastructure as Code
@@ -208,7 +208,7 @@ In real-life production envrionment, alternatively, I can create a cluster on Go
 
     6. After run completes, go to Bigquery dashboard and verify the table `fact_observations` is in the dataset set above as an environmental variable.
 
-5. Visualization - Google Data Studio
+5. Dashboard Visualization - Google Data Studio
 
     1. Open Google Data Studio at `https://lookerstudio.google.com/`.
 
@@ -216,9 +216,15 @@ In real-life production envrionment, alternatively, I can create a cluster on Go
 
     3. Create `Report`. Switch to `My data source` and select `fact_observations`. `Add` to the report.
 
-    4. Create a case study of a country by adding charts.
+    4. Create a dashboard by adding charts as follows:
 
-        You can find some case study reports at folder Data_Studio_reports:
+        ![image_alt](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/images/pile_1.png)
+
+        ![image_alt](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/images/pile_2.png)
+
+        ![image_alt](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/images/pile_3.png)
+
+        You can find some case study reports at folder `Data_Studio_reports`:
 
         [Case study - Indonesia](https://github.com/YinlongQian/thermal_anomaly_insights/blob/main/Data_Studio_reports/Case_Study-Indonesia.pdf)
 

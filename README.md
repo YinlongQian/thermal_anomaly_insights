@@ -70,7 +70,6 @@ In real-life production envrionment, alternatively, I can create a cluster on Go
 
 2. run IaC
     1. inside the local repo directory, go to folder `IAC`
-
         ```
         cd IAC
         ```
@@ -82,10 +81,9 @@ In real-life production envrionment, alternatively, I can create a cluster on Go
         * gcs_bucket_name: your bucker name on GCS, required to be globally unique
         * bq_dataset_name: your dataset name on Google Bigquery
 
-    3. Copy the content in your GCP service account JSON file to `gcp_credentials.json` in subfolder `credentials`. Do not change the file name `gcp_credentials.json`.
+    3. Copy the content in your GCP service account JSON file to `IAC/credentials/gcp_credentials.json`. Do not change the file name `gcp_credentials.json`.
 
     4. At folder `IAC`, initialize terraform, dry-run terraform, and apply terraform
-
         ```
         terraform init
         terraform plan
@@ -97,7 +95,6 @@ In real-life production envrionment, alternatively, I can create a cluster on Go
 3. Set-up on GCP instance
 
     1. ssh to the GCP instance
-
         ```
         ssh -i PATH_TO_PRIVATE_KEY USERNAME@EXTERNAL_IP
         ```
@@ -140,12 +137,13 @@ In real-life production envrionment, alternatively, I can create a cluster on Go
         git clone https://github.com/YinlongQian/thermal_anomaly_insights.git
         ```
 
-    6. (Optional) Edit the year list at `AIRFLOW_DOCKER/inputs/years.txt` and the country list at `AIRFLOW_DOCKER/inputs/countries.txt` of your interest
+    6. Copy the content in your GCP service account JSON file to `AIRFLOW_DOCKER/credentials/gcp_credentials.json`. Do not change the file name `gcp_credentials.json`.
 
-    7. build and run the customized Airflow docker image
+    7. (Optional) Edit the year list at `AIRFLOW_DOCKER/inputs/years.txt` and the country list at `AIRFLOW_DOCKER/inputs/countries.txt` of your interest
+
+    8. build and run the customized Airflow docker image inside `AIRFLOW_DOCKER`
 
         ```
-        cd thermal_anomaly_insights/AIRFLOW_DOCKER/
         # sudo docker build . --tag airflow_python310:latest
         sudo docker image tag us-east4-docker.pkg.dev/de-zoomcampfire/airflow-for-de-zoomcamp/airflow_python310:latest airflow_python310:latest
         echo -e "AIRFLOW_UID=$(id -u)" > .env
